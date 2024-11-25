@@ -1,0 +1,47 @@
+{
+    "name": "axios-exception-handler",
+    "version": "1.0.0",
+    "description": "Exception Handler for Axios",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "types": "dist/types/index.d.ts",
+    "type": "module",
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "rollup --config rollup.config.mjs",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/toothlessdev/axios-exception-handler.git"
+    },
+    "keywords": [
+        "Axios",
+        "Exception",
+        "Handler"
+    ],
+    "author": "toothlessdev",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/toothlessdev/axios-exception-handler/issues"
+    },
+    "homepage": "https://github.com/toothlessdev/axios-exception-handler#readme",
+    "peerDependencies": {
+        "axios": "^1.7.7",
+        "rollup": "^4.27.4"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^28.0.1",
+        "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "^15.3.0",
+        "@types/node": "^22.9.3",
+        "@types/rollup": "^0.51.4",
+        "rollup-plugin-dts": "^6.1.1",
+        "rollup-plugin-peer-deps-external": "^2.2.4",
+        "rollup-plugin-typescript2": "^0.36.0",
+        "typescript": "^5.7.2"
+    }
+}

@@ -42,7 +42,8 @@ getHello()
         console.log(data); // Hello name
     })
     .catch((err) => {
-        console.error(err); // Cannot Find User | Conflict | Server Error
+        console.error(err); // 'Cannot Find User' | 'Conflict' | 'Server Error'
+        toast.error(err);   // Render Toast From Derived Error
     });
 ```
 

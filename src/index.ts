@@ -10,6 +10,7 @@ class AxiosExceptionHandler<T> {
      */
     constructor(response: AxiosResponse<T> | AxiosError<T> | Error | unknown) {
         this.response = response;
+        this.exceptions = new Map<number, string>();
     }
 
     /**

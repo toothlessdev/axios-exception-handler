@@ -1,19 +1,14 @@
 import { AxiosResponse, AxiosError } from "axios";
 
-interface ApiException {
-    code: number;
-    message: string;
-}
-
-class ExceptionHandler<T> {
-    public response: AxiosResponse<T> | AxiosError<T>;
-    public exceptions: ApiException[] = [];
+class AxiosExceptionHandler<T> {
+    public response: AxiosResponse<T> | AxiosError<T> | Error | unknown;
+    public exceptions: Map<number, string> = new Map();
     public unHandledMessage: string = "Unhandled exception";
 
     /**
      * @param response AxiosResponse
      */
-    constructor(response: AxiosResponse<T> | AxiosError<T>) {
+    constructor(response: AxiosResponse<T> | AxiosError<T> | Error | unknown) {
         this.response = response;
     }
 
@@ -23,7 +18,7 @@ class ExceptionHandler<T> {
      * @param message Error message to throw
      */
     public addCase(code: number, message: string) {
-        this.exceptions.push({ code, message });
+        this.exceptions.set(code, message);
         return this;
     }
 
@@ -49,19 +44,26 @@ class ExceptionHandler<T> {
 
     /**
      * Handle the exception
-     * @returns AxiosResponse | Error | undefined
+     * @returns AxiosResponse<T>
      */
     public handle(): AxiosResponse<T> {
-        if (!(this.response instanceof AxiosError)) return this.response;
+        if (!(this.response instanceof AxiosError)) {
+            if (this.response instanceof Error) throw this.response;
+            return this.response as AxiosResponse<T>;
+        }
 
         const status = this.response.response?.status;
 
-        for (const exception of this.exceptions) {
-            if (exception.code === status) throw new Error(exception.message);
+        if (status && this.exceptions.has(status)) {
+            throw new Error(this.exceptions.get(status));
         }
 
         throw new Error(this.unHandledMessage);
     }
+}
+
+function ExceptionHandler<T>(response: AxiosResponse<T> | AxiosError<T> | Error | unknown): AxiosExceptionHandler<T> {
+    return new AxiosExceptionHandler(response);
 }
 
 export { ExceptionHandler };

@@ -23,17 +23,23 @@ import axios from "axios";
 import { ExceptionHandler } from "axios-exception-handler";
 
 const getHello = async ({ name }) => {
-    const response = await axios.post<SignUpResponseBody>("/hello", {
-        name,
-        studentId,
-        phoneNumber,
-    });
+    try{
+        const response = await axios.post<SignUpResponseBody>("/hello", {
+            name,
+            studentId,
+            phoneNumber,
+        });
+    } catch(err) {
+        ExceptionHandler(err)
+            .addCase(404, "Cannot Find User")
+            .addCase(409, "Conflict")
+            .addCases([500, 501, 503], "Server Error")
+            .addDefaultCase("Unexpected Error")
+            .handle();
+    }
 
     return new ExceptionHandler(response)
-        .addCase(404, "Cannot Find User")
-        .addCase(409, "Conflict")
-        .addCases([500, 501, 503], "Server Error")
-        .handle();
+        
 };
 
 // Usage

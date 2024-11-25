@@ -8,6 +8,7 @@ interface ApiException {
 class ExceptionHandler<T> {
     public response: AxiosResponse<T> | AxiosError<T>;
     public exceptions: ApiException[] = [];
+    public unHandledMessage: string = "Unhandled exception";
 
     /**
      * @param response AxiosResponse
@@ -37,10 +38,20 @@ class ExceptionHandler<T> {
     }
 
     /**
+     * Add a default case
+     * @param message Error message to throw
+     * @default "Unhandled exception"
+     */
+    public addDefaultCase(message: string) {
+        this.unHandledMessage = message;
+        return this;
+    }
+
+    /**
      * Handle the exception
      * @returns AxiosResponse | Error | undefined
      */
-    public handle(): AxiosResponse<T> | Error | undefined {
+    public handle(): AxiosResponse<T> {
         if (!(this.response instanceof AxiosError)) return this.response;
 
         const status = this.response.response?.status;
@@ -48,6 +59,8 @@ class ExceptionHandler<T> {
         for (const exception of this.exceptions) {
             if (exception.code === status) throw new Error(exception.message);
         }
+
+        throw new Error(this.unHandledMessage);
     }
 }
 

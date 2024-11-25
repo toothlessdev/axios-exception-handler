@@ -48,7 +48,6 @@ class ExceptionHandler<T> {
         for (const exception of this.exceptions) {
             if (exception.code === status) throw new Error(exception.message);
         }
-        return undefined;
     }
 }
 

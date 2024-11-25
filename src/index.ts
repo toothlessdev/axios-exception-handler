@@ -52,7 +52,7 @@ class AxiosExceptionHandler<T> {
             return this.response as AxiosResponse<T>;
         }
 
-        const status = this.response.response?.status;
+        const status = this.response && (this.response as AxiosError<T>).response?.status;
 
         if (status && this.exceptions.has(status)) {
             throw new Error(this.exceptions.get(status));

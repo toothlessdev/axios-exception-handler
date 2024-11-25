@@ -5,7 +5,7 @@ interface ApiException {
     message: string;
 }
 
-export class ExceptionHandler<T> {
+class ExceptionHandler<T> {
     public response: AxiosResponse<T> | AxiosError<T>;
     public exceptions: ApiException[] = [];
 
@@ -51,3 +51,6 @@ export class ExceptionHandler<T> {
         return undefined;
     }
 }
+
+export { ExceptionHandler };
+export default ExceptionHandler;
